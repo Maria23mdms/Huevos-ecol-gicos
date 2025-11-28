@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huevos Ecológicos - La Granja Natural</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>La Granja Natural</h1>
+        <p>Huevos 100% ecológicos y frescos directamente de la granja.</p>
+    </header>
+
+    <nav>
+        <a href="#productos">Productos</a>
+        <a href="#sobre">Sobre nosotros</a>
+        <a href="#contacto">Contacto</a>
+        <button id="btn-carrito" class="carrito-boton">🛒 Carrito (<span id="contador">0</span>)</button>
+    </nav>
+
+    <section id="hero">
+        <h2>Calidad ecológica para tu mesa</h2>
+        <p>Gallinas criadas en libertad, alimentadas con pienso natural.</p>
+    </section>
+
+    <section id="productos">
+        <h2>Nuestros Productos</h2>
+
+        <div class="producto">
+            <h3>Docena de huevos ecológicos</h3>
+            <p>Huevos frescos de gallinas criadas al aire libre.</p>
+            <span class="precio">3.50</span> €
+            <button class="add" data-nombre="Docena de huevos ecológicos" data-precio="3.50">Añadir al carrito</button>
+        </div>
+
+        <div class="producto">
+            <h3>Pack familiar (30 huevos)</h3>
+            <p>Perfecto para familias o restaurantes.</p>
+            <span class="precio">8.90</span> €
+            <button class="add" data-nombre="Pack familiar (30 huevos)" data-precio="8.90">Añadir al carrito</button>
+        </div>
+
+        <div class="producto">
+            <h3>Huevos XL ecológicos</h3>
+            <p>Huevos grandes y sabrosos, de excelente calidad.</p>
+            <span class="precio">4.50</span> €
+            <button class="add" data-nombre="Huevos XL ecológicos" data-precio="4.50">Añadir al carrito</button>
+        </div>
+    </section>
+
+    <section id="sobre">
+        <h2>Sobre nosotros</h2>
+        <p>
+            Somos una pequeña granja familiar dedicada a la cría de gallinas en libertad.
+            Nuestro compromiso es ofrecer huevos ecológicos frescos, nutritivos y respetuosos
+            con el bienestar animal.
+        </p>
+    </section>
+
+    <section id="contacto">
+        <h2>Contacto</h2>
+        <p>📞 Teléfono: +34 600 123 456</p>
+        <p>📧 Email: contacto@lagranjanatural.es</p>
+    </section>
+
+    <footer>
+        <p>© 2025 La Granja Natural — Venta de huevos ecológicos</p>
+    </footer>
+
+    <!-- 🛒 Sidebar del Carrito -->
+    <div id="carrito" class="carrito">
+        <h2>Tu Carrito</h2>
+        <div id="items"></div>
+        <h3>Total: <span id="total">0.00</span> €</h3>
+        <button id="cerrar">Cerrar</button>
+    </div>
+
+    <script>
+        const carrito = [];
+        const btnCarrito = document.getElementById("btn-carrito");
+        const carritoDiv = document.getElementById("carrito");
+        const cerrar = document.getElementById("cerrar");
+        const itemsDiv = document.getElementById("items");
+        const totalSpan = document.getElementById("total");
+        const contador = document.getElementById("contador");
+
+        document.querySelectorAll(".add").forEach(boton => {
+            boton.addEventListener("click", () => {
+                const nombre = boton.dataset.nombre;
+                const precio = parseFloat(boton.dataset.precio);
+
+                const item = carrito.find(p => p.nombre === nombre);
+                if (item) {
+                    item.cantidad++;
+                } else {
+                    carrito.push({ nombre, precio, cantidad: 1 });
+                }
+
+                actualizarCarrito();
+            });
+        });
+
+        btnCarrito.addEventListener("click", () => {
+            carritoDiv.classList.add("visible");
+        });
+
+        cerrar.addEventListener("click", () => {
+            carritoDiv.classList.remove("visible");
+        });
+
+        function actualizarCarrito() {
+            itemsDiv.innerHTML = "";
+            let total = 0;
+            let cantidadTotal = 0;
+
+            carrito.forEach(item => {
+                total += item.precio * item.cantidad;
+                cantidadTotal += item.cantidad;
+
+                const div = document.createElement("div");
+                div.classList.add("item-carrito");
+
+                div.innerHTML = `
+                    <p><strong>${item.nombre}</strong></p>
+                    <p>${item.precio.toFixed(2)} €</p>
+                    <p>Cantidad: 
+                        <button class="menos">-</button>
+                        ${item.cantidad}
+                        <button class="mas">+</button>
+                    </p>
+                `;
+
+                div.querySelector(".menos").addEventListener("click", () => {
+                    item.cantidad--;
+                    if (item.cantidad === 0) {
+                        carrito.splice(carrito.indexOf(item), 1);
+                    }
+                    actualizarCarrito();
+                });
+
+                div.querySelector(".mas").addEventListener("click", () => {
+                    item.cantidad++;
+                    actualizarCarrito();
+                });
+
+                itemsDiv.appendChild(div);
+            });
+
+            totalSpan.textContent = total.toFixed(2);
+            contador.textContent = cantidadTotal;
+        }
+    </script>
+
+</body>
+</html>
+

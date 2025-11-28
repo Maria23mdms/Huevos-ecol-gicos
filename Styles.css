@@ -1,0 +1,41 @@
+.carrito-boton {
+    background: #6aa84f;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.carrito {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 300px;
+    height: 100%;
+    background: white;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+    padding: 20px;
+    transition: 0.3s;
+    z-index: 999;
+}
+
+.carrito.visible {
+    right: 0;
+}
+
+.item-carrito {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.item-carrito button {
+    padding: 3px 8px;
+    border: none;
+    background: #6aa84f;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
